@@ -1,0 +1,11 @@
+C:\Users\alex\Projects\particle3D\DeployTest\obj\ARM\Debug\DeployTest.csprojResolveAssemblyReference.cache
+C:\Users\alex\Projects\particle3D\DeployTest\obj\ARM\Debug\App.g.i.cs
+C:\Users\alex\Projects\particle3D\DeployTest\obj\ARM\Debug\App.g.cs
+C:\Users\alex\Projects\particle3D\DeployTest\obj\ARM\Debug\GamePage.g.i.cs
+C:\Users\alex\Projects\particle3D\DeployTest\obj\ARM\Debug\GamePage.g.cs
+C:\Users\alex\Projects\particle3D\DeployTest\obj\ARM\Debug\XamlTypeInfo.g.cs
+C:\Users\alex\Projects\particle3D\DeployTest\obj\ARM\Debug\App.xaml
+C:\Users\alex\Projects\particle3D\DeployTest\obj\ARM\Debug\GamePage.xaml
+C:\Users\alex\Projects\particle3D\DeployTest\obj\ARM\Debug\App.xbf
+C:\Users\alex\Projects\particle3D\DeployTest\obj\ARM\Debug\GamePage.xbf
+C:\Users\alex\Projects\particle3D\DeployTest\obj\ARM\Debug\XamlSaveStateFile.xml

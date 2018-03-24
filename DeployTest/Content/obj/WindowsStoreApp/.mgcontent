@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>WindowsStoreApp</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/alex/Projects/particle3D/DeployTest/Content/checker.bmp</File>
+    <File>C:/Users/alex/Projects/particle3D/DeployTest/Content/explosion.png</File>
+    <File>C:/Users/alex/Projects/particle3D/DeployTest/Content/fire.png</File>
+    <File>C:/Users/alex/Projects/particle3D/DeployTest/Content/smoke.png</File>
+    <File>C:/Users/alex/Projects/particle3D/DeployTest/Content/ParticleEffect.fx</File>
+    <File>C:/Users/alex/Projects/particle3D/DeployTest/Content/File.spritefont</File>
+    <File>C:/Users/alex/Projects/particle3D/DeployTest/Content/grid.x</File>
+  </SourceFiles>
+</SourceFileCollection>
