@@ -68,8 +68,7 @@ namespace Particle3DSample
             velocity.Z = (float)(random.NextDouble() - 0.5) * sidewaysVelocityRange;
 
             // Use the particle emitter helper to output our trail particles.
-            trailEmitter = new ParticleEmitter(projectileTrailParticles,
-                                               trailParticlesPerSecond, position);
+            trailEmitter = new ParticleEmitter(projectileTrailParticles, trailParticlesPerSecond, position);
         }
 
 
@@ -86,7 +85,7 @@ namespace Particle3DSample
             age += elapsedTime;
 
             // Update the particle emitter, which will create our particle trail.
-            trailEmitter.Update(gameTime, position);
+            //trailEmitter.Update(gameTime, position);
 
             // If enough time has passed, explode! Note how we pass our velocity
             // in to the AddParticle method: this lets the explosion be influenced
@@ -98,7 +97,7 @@ namespace Particle3DSample
 
                 for (int i = 0; i < numExplosionSmokeParticles; i++)
                     explosionSmokeParticles.AddParticle(position, velocity);
-
+                    
                 return false;
             }
                 

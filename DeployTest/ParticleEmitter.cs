@@ -51,8 +51,7 @@ namespace Particle3DSample
 		/// <summary>
 		/// Constructs a new particle emitter object.
 		/// </summary>
-		public ParticleEmitter (ParticleSystem particleSystem,
-				float particlesPerSecond,Vector3 initialPosition)
+		public ParticleEmitter (ParticleSystem particleSystem, float particlesPerSecond, Vector3 initialPosition)
 		{
 			this.particleSystem = particleSystem;
 

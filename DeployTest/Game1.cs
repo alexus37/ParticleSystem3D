@@ -28,6 +28,7 @@ namespace Particle3DSample
         SpriteBatch spriteBatch;
         SpriteFont font;
         Model grid;
+        
 
         // This sample uses five different particle systems.
         ParticleSystem explosionParticles;
@@ -77,23 +78,23 @@ namespace Particle3DSample
             explosionParticles = new ParticleSystem(this, Content, "ExplosionSettings");
             explosionSmokeParticles = new ParticleSystem(this, Content, "ExplosionSmokeSettings");
             projectileTrailParticles = new ParticleSystem(this, Content, "ProjectileTrailSettings");
-            smokePlumeParticles = new ParticleSystem(this, Content, "SmokePlumeSettings");
-            fireParticles = new ParticleSystem(this, Content, "FireSettings");
+            //smokePlumeParticles = new ParticleSystem(this, Content, "SmokePlumeSettings");
+            //fireParticles = new ParticleSystem(this, Content, "FireSettings");
 
             // Set the draw order so the explosions and fire
             // will appear over the top of the smoke.
-            smokePlumeParticles.DrawOrder = 100;
+            //smokePlumeParticles.DrawOrder = 100;
             explosionSmokeParticles.DrawOrder = 200;
             projectileTrailParticles.DrawOrder = 300;
             explosionParticles.DrawOrder = 400;
-            fireParticles.DrawOrder = 500;
+            //fireParticles.DrawOrder = 500;
 
             // Register the particle system components.
             Components.Add(explosionParticles);
             Components.Add(explosionSmokeParticles);
             Components.Add(projectileTrailParticles);
-            Components.Add(smokePlumeParticles);
-            Components.Add(fireParticles);
+            //Components.Add(smokePlumeParticles);
+            //Components.Add(fireParticles);
         }
 
         /// <summary>
@@ -119,6 +120,7 @@ namespace Particle3DSample
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("File");
             grid = Content.Load<Model>("grid");
+            
         }
 
         /// <summary>
@@ -180,19 +182,18 @@ namespace Particle3DSample
             Matrix.CreateLookAt(new Vector3(0, 0, -cameraDistance),
                         new Vector3(0, 0, 0), Vector3.Up);
 
-            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
-                                aspectRatio,
-                                1, 10000);
+            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 1, 10000);
 
             // Pass camera matrices through to the particle system components.
             explosionParticles.SetCamera(view, projection);
             explosionSmokeParticles.SetCamera(view, projection);
             projectileTrailParticles.SetCamera(view, projection);
-            smokePlumeParticles.SetCamera(view, projection);
-            fireParticles.SetCamera(view, projection);
+            //smokePlumeParticles.SetCamera(view, projection);
+            //fireParticles.SetCamera(view, projection);
 
             // Draw our background grid and message text.
             DrawGrid(view, projection);
+            
 
             DrawMessage();
 
@@ -211,9 +212,7 @@ namespace Particle3DSample
             {
                 // Create a new projectile once per second. The real work of moving
                 // and creating particles is handled inside the Projectile class.
-                projectiles.Add(new Projectile(explosionParticles,
-                        explosionSmokeParticles,
-                        projectileTrailParticles));
+                projectiles.Add(new Projectile(explosionParticles, explosionSmokeParticles, projectileTrailParticles));
 
                 timeToNextProjectile += TimeSpan.FromSeconds(1);
             }
@@ -276,10 +275,8 @@ namespace Particle3DSample
 		/// </summary>
 		Vector3 RandomPointOnCircle()
         {
-            const
-                float radius = 30;
-            const
-                float height = 40;
+            const float radius = 30;
+            const float height = 40;
 
             double angle = random.NextDouble() * Math.PI * 2;
 
@@ -302,6 +299,8 @@ namespace Particle3DSample
 
             grid.Draw (Matrix.Identity, view, projection);
         }
+
+        
 
 
         /// <summary>

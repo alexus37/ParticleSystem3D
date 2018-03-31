@@ -22,6 +22,130 @@ namespace Particle3DSample
     /// </summary>
     public class ParticleSettings
     {
+        public ParticleSettings(String settingsType)
+        {
+            switch (settingsType)
+            {
+                case "ExplosionSettings":
+                    TextureName = "explosion";
+                    MaxParticles = 100;
+                    Duration = TimeSpan.FromSeconds(2);
+                    DurationRandomness = 1;
+                    EmitterVelocitySensitivity = 1;
+                    MinHorizontalVelocity = 20;
+                    MaxHorizontalVelocity = 30;
+                    MinVerticalVelocity = -20;
+                    MaxVerticalVelocity = 20;
+                    Gravity = Vector3.Zero;
+                    EndVelocity = 0;
+                    MinColor = new Color(255, 128, 128, 128);
+                    MaxColor = new Color(255, 128, 128, 128);
+                    
+                    MinRotateSpeed = -1;
+                    MaxRotateSpeed = 1;
+                    MinStartSize = 10;
+                    MaxStartSize = 10;
+                    MinEndSize = 100;
+                    MaxEndSize = 200;
+                    BlendState = BlendState.Additive;
+
+                    break;
+                case "ExplosionSmokeSettings":                 
+                    BlendState = BlendState.NonPremultiplied;
+                    TextureName = "smoke";
+                    MaxParticles = 1;
+                    Duration = TimeSpan.FromSeconds(4);
+                    DurationRandomness = 0;
+                    EmitterVelocitySensitivity = 1;
+                    MinHorizontalVelocity = 0;
+                    MaxHorizontalVelocity = 50;
+                    MinVerticalVelocity = -10;
+                    MaxVerticalVelocity = 50;
+                    Gravity = new Vector3(0, -20, 0);
+                    EndVelocity = 0;
+                    MinColor = new Color(100, 83, 83, 83);
+                    MaxColor = new Color(255, 255, 255, 255);
+                    MinRotateSpeed = -2;
+                    MaxRotateSpeed = 2;
+                    MinStartSize = 10;
+                    MaxStartSize = 10;
+                    MinEndSize = 100;
+                    MaxEndSize = 200;
+
+                    break;
+                case "ProjectileTrailSettings":
+                    BlendState = BlendState.NonPremultiplied;
+                    TextureName = "smoke";
+                    MaxParticles = 1;
+                    Duration = TimeSpan.FromSeconds(3);
+                    DurationRandomness = 1.5f;
+                    EmitterVelocitySensitivity = 0.1f;
+                    MinHorizontalVelocity = 0;
+                    MaxHorizontalVelocity = 1;
+                    MinVerticalVelocity = -1;
+                    MaxVerticalVelocity = 1;
+                    Gravity = new Vector3(0, 0, 0);
+                    EndVelocity = 1;
+                    MinColor = new Color(100, 25, 38, 50);
+                    MaxColor = new Color(50, 100, 100, 100);
+                    MinRotateSpeed = -4;
+                    MaxRotateSpeed = 4;
+                    MinStartSize = 2;
+                    MaxStartSize = 4;
+                    MinEndSize = 5;
+                    MaxEndSize = 15;
+
+                    break;
+                case "SmokePlumeSettings":
+                    TextureName = "explosion";
+                    MaxParticles = 600;
+                    Duration = TimeSpan.FromSeconds(10);
+                    DurationRandomness = 0;
+                    EmitterVelocitySensitivity = 1;
+                    MinHorizontalVelocity = 0;
+                    MaxHorizontalVelocity = 15;
+                    MinVerticalVelocity = 10;
+                    MaxVerticalVelocity = 20;
+                    Gravity = new Vector3(-20, -5, 0);
+                    EndVelocity = 0.75f;
+                    MinColor = new Color(255, 255, 255, 255);
+                    MaxColor = new Color(255, 255, 255, 255);
+                    MinRotateSpeed = -1;
+                    MaxRotateSpeed = 1;
+                    MinStartSize = 5;
+                    MaxStartSize = 10;
+                    MinEndSize = 50;
+                    MaxEndSize = 200;
+                    BlendState = BlendState.NonPremultiplied;
+
+                    break;
+                case "FireSettings":
+                    TextureName = "fire";
+                    MaxParticles = 2400;
+                    Duration = TimeSpan.FromSeconds(2);
+                    DurationRandomness = 1;
+                    EmitterVelocitySensitivity = 1;
+                    MinHorizontalVelocity = 0;
+                    MaxHorizontalVelocity = 15;
+                    MinVerticalVelocity = -10;
+                    MaxVerticalVelocity = 10;
+                    Gravity = new Vector3(0, 15, 0);
+                    EndVelocity = 1;
+                    MinColor = new Color(4, 128, 128, 128);
+                    MaxColor = new Color(16, 128, 128, 128);
+                    MinRotateSpeed = 0;
+                    MaxRotateSpeed = 0;
+                    MinStartSize = 5;
+                    MaxStartSize = 10;
+                    MinEndSize = 10;
+                    MaxEndSize = 40;
+                    BlendState = BlendState.Additive;
+
+                    break;
+                default:
+                    break;
+            }
+        }
         // Name of the texture used by this particle system.
         public string TextureName = "explosion";
 

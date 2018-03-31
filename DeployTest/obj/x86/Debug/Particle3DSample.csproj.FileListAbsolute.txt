@@ -237,3 +237,4 @@ C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Cont
 C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Content\File.xnb
 C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Content\checker_0.xnb
 C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Content\grid.xnb
+C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Content\sphere.xnb

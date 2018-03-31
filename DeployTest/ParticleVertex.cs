@@ -40,20 +40,15 @@ namespace Particle3DSample
 		// Describe the layout of this vertex structure.
 		public static readonly VertexDeclaration VertexDeclaration = new VertexDeclaration
 		(
-			new VertexElement (0, VertexElementFormat.Short2,
-					VertexElementUsage.Position, 0),
+			new VertexElement (0, VertexElementFormat.Short2, VertexElementUsage.Position, 0),
 	
-			new VertexElement (4, VertexElementFormat.Vector3,
-					VertexElementUsage.Position, 1),
+			new VertexElement (4, VertexElementFormat.Vector3, VertexElementUsage.Position, 1),
 	
-			new VertexElement (16, VertexElementFormat.Vector3,
-					VertexElementUsage.Normal, 0),
+			new VertexElement (16, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0),
 	
-			new VertexElement (28, VertexElementFormat.Color,
-					VertexElementUsage.Color, 0),
+			new VertexElement (28, VertexElementFormat.Color, VertexElementUsage.Color, 0),
 	
-			new VertexElement (32, VertexElementFormat.Single,
-					VertexElementUsage.TextureCoordinate, 0)
+			new VertexElement (32, VertexElementFormat.Single, VertexElementUsage.TextureCoordinate, 0)
 		);
 
 

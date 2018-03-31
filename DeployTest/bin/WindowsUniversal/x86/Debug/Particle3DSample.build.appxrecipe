@@ -444,6 +444,9 @@
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\smoke.xnb">
       <PackagePath>Content\smoke.xnb</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\sphere.xnb">
+      <PackagePath>Content\sphere.xnb</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Particle3D.xr.xml">
       <PackagePath>Particle3D.xr.xml</PackagePath>
     </AppxPackagedFile>

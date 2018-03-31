@@ -23,11 +23,13 @@ namespace Particle3DSample
 	/// </summary>
 	public class ParticleSystem : DrawableGameComponent
 	{
-	#region Fields
+        #region Fields
 
-
-		// Name of the XML settings file describing this particle system.
-		string settingsName;
+        Model sphere;
+        Matrix _view;
+        Matrix _projection;
+        // Name of the XML settings file describing this particle system.
+        string settingsName;
 
 
 		// Settings class controls the appearance and animation of this particle system.
@@ -53,10 +55,12 @@ namespace Particle3DSample
 		// An array of particles, treated as a circular queue.
 		ParticleVertex[] particles;
 
+        
 
-		// A vertex buffer holding our particles. This contains the same data as
-		// the particles array, but copied across to where the GPU can access it.
-		DynamicVertexBuffer vertexBuffer;
+
+        // A vertex buffer holding our particles. This contains the same data as
+        // the particles array, but copied across to where the GPU can access it.
+        DynamicVertexBuffer vertexBuffer;
 
 
 		// Index buffer turns sets of four vertices into particle quads (pairs of triangles).
@@ -176,7 +180,8 @@ namespace Particle3DSample
             //return;
             // loader does not work default we go with explosion
             //settings = content.Load<ParticleSettings> (settingsName);
-            settings = new ParticleSettings();
+            settings = new ParticleSettings(settingsName);
+            sphere = content.Load<Model>("sphere");
 
             // Allocate the particle array, and fill in the corner fields (which never change).
             particles = new ParticleVertex[settings.MaxParticles * 4];
@@ -195,7 +200,14 @@ namespace Particle3DSample
 
 			// Create and populate the index buffer.
 			ushort[] indices = new ushort[settings.MaxParticles * 6];
-
+            /*
+             * 3_____2
+             * |   /|
+             * |  / |
+             * | /  |
+             * ------
+             * 0    1
+             */
 			for (int i = 0; i < settings.MaxParticles; i++) {
 				indices [i * 6 + 0] = (ushort)(i * 4 + 0);
 				indices [i * 6 + 1] = (ushort)(i * 4 + 1);
@@ -211,24 +223,22 @@ namespace Particle3DSample
 			indexBuffer.SetData (indices);
 		}
 
-
-		/// <summary>
-		/// Helper for loading and initializing the particle effect.
-		/// </summary>
-		void LoadParticleEffect ()
+        
+        /// <summary>
+        /// Helper for loading and initializing the particle effect.
+        /// </summary>
+        void LoadParticleEffect ()
 		{
 			Effect effect = content.Load<Effect> ("ParticleEffect");
 
-			// If we have several particle systems, the content manager will return
-			// a single shared effect instance to them all. But we want to preconfigure
-			// the effect with parameters that are specific to this particular
-			// particle system. By cloning the effect, we prevent one particle system
-			// from stomping over the parameter settings of another.
+            // If we have several particle systems, the content manager will return
+            // a single shared effect instance to them all. But we want to preconfigure
+            // the effect with parameters that are specific to this particular
+            // particle system. By cloning the effect, we prevent one particle system
+            // from stomping over the parameter settings of another.
 
-			//particleEffect = effect.Clone ();
-			// No cloning for now so we will just create a new effect for now
-			particleEffect = effect;
-			
+            particleEffect = effect.Clone ();
+            
 			EffectParameterCollection parameters = particleEffect.Parameters;
 
 			// Look up shortcuts for parameters that change every frame.
@@ -257,7 +267,7 @@ namespace Particle3DSample
 			// Load the particle texture, and set it onto the effect.
 			Texture2D texture = content.Load<Texture2D> (settings.TextureName);
 
-            // parameters ["TextureSampler"].SetValue (texture); not sure why it was a TextureSampler
+            // TEMP CHANGE
             parameters["Texture"].SetValue (texture);
 		}
 
@@ -360,8 +370,10 @@ namespace Particle3DSample
 		{
 			GraphicsDevice device = GraphicsDevice;
 
-			// Restore the vertex buffer contents if the graphics device was lost.
-			if (vertexBuffer.IsContentLost) {
+            DrawSphere(device);
+
+            // Restore the vertex buffer contents if the graphics device was lost.
+            if (vertexBuffer.IsContentLost) {
 				vertexBuffer.SetData (particles);
 			}
 
@@ -388,30 +400,38 @@ namespace Particle3DSample
 				device.SetVertexBuffer (vertexBuffer);
 				device.Indices = indexBuffer;
 
-				// Activate the particle effect.
-				foreach (EffectPass pass in particleEffect.CurrentTechnique.Passes) {
-					pass.Apply ();
+                // Activate the particle effect.
+                foreach (EffectPass pass in particleEffect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
 
-					if (firstActiveParticle < firstFreeParticle) {
-						// If the active particles are all in one consecutive range,
-						// we can draw them all in a single call.
-						device.DrawIndexedPrimitives (PrimitiveType.TriangleList, 0, 
-						firstActiveParticle * 4, (firstFreeParticle - firstActiveParticle) * 4, 
-						firstActiveParticle * 6, (firstFreeParticle - firstActiveParticle) * 2);
-					} else {
-						// If the active particle range wraps past the end of the queue
-						// back to the start, we must split them over two draw calls.
-						device.DrawIndexedPrimitives (PrimitiveType.TriangleList, 0, 
-						firstActiveParticle * 4, (settings.MaxParticles - firstActiveParticle) * 4, 
-						firstActiveParticle * 6, (settings.MaxParticles - firstActiveParticle) * 2);
+                    if (firstActiveParticle < firstFreeParticle)
+                    {
+                        if (firstActiveParticle < firstFreeParticle)
+                        {
+                            // If the active particles are all in one consecutive range,
+                            // we can draw them all in a single call.
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
+                                                         firstActiveParticle * 4, (firstFreeParticle - firstActiveParticle) * 4,
+                                                         firstActiveParticle * 6, (firstFreeParticle - firstActiveParticle) * 2);
+                        }
+                        else
+                        {
+                            // If the active particle range wraps past the end of the queue
+                            // back to the start, we must split them over two draw calls.
+                            device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
+                                                         firstActiveParticle * 4, (settings.MaxParticles - firstActiveParticle) * 4,
+                                                         firstActiveParticle * 6, (settings.MaxParticles - firstActiveParticle) * 2);
 
-						if (firstFreeParticle > 0) {
-							device.DrawIndexedPrimitives (PrimitiveType.TriangleList, 0, 
-							0, firstFreeParticle * 4, 
-							0, firstFreeParticle * 2);
-						}
-					}
-				}
+                            if (firstFreeParticle > 0)
+                            {
+                                device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0,
+                                                             0, firstFreeParticle * 4,
+                                                             0, firstFreeParticle * 2);
+                            }
+                        }
+                    }
+                }
 
 				// Reset some of the renderstates that we changed,
 				// so as not to mess up any other subsequent drawing.
@@ -431,24 +451,27 @@ namespace Particle3DSample
 			int stride = ParticleVertex.SizeInBytes;
 
 			if (firstNewParticle < firstFreeParticle) {
-				// If the new particles are all in one consecutive range,
-				// we can upload them all in a single call.
-				//				vertexBuffer.SetData (firstNewParticle * stride * 4, particles, 
-				//					firstNewParticle * 4, 
-				//					(firstFreeParticle - firstNewParticle) * 4, 
-				//					stride, SetDataOptions.NoOverwrite);			} else {
-				// If the new particle range wraps past the end of the queue
-				// back to the start, we must split them over two upload calls.
-				//				vertexBuffer.SetData (firstNewParticle * stride * 4, particles, 
-				//					firstNewParticle * 4, 
-				//					(settings.MaxParticles - firstNewParticle) * 4, 
-				//					stride, SetDataOptions.NoOverwrite);
+                // If the new particles are all in one consecutive range,
+                // we can upload them all in a single call.
+                vertexBuffer.SetData(firstNewParticle * stride * 4,             // offset in bytes
+                    particles,                                                  // data
+                    firstNewParticle * 4,                                       // start index
+                    (firstFreeParticle - firstNewParticle) * 4,                 // element count
+                    stride,                                                     // element size in bytes
+                    SetDataOptions.NoOverwrite);
+            } else {
+                // If the new particle range wraps past the end of the queue
+                // back to the start, we must split them over two upload calls.
+                vertexBuffer.SetData(firstNewParticle * stride * 4, particles,
+                    firstNewParticle * 4,
+                    (settings.MaxParticles - firstNewParticle) * 4,
+                    stride, SetDataOptions.NoOverwrite);
 
-				if (firstFreeParticle > 0) {
-					//					vertexBuffer.SetData (0, particles, 
-					//					0, firstFreeParticle * 4, 
-					//					stride, SetDataOptions.NoOverwrite);
-				}
+                if (firstFreeParticle > 0) {
+                    vertexBuffer.SetData(0, particles,
+                    0, firstFreeParticle * 4,
+                    stride, SetDataOptions.NoOverwrite);
+                }
 			}
 
 			// Move the particles we just uploaded from the new to the active queue.
@@ -467,15 +490,38 @@ namespace Particle3DSample
 		/// </summary>
 		public void SetCamera (Matrix view, Matrix projection)
 		{
-			effectViewParameter.SetValue (view);
+            _view = view;
+            _projection = projection;
+
+            effectViewParameter.SetValue (view);
 			effectProjectionParameter.SetValue (projection);
 		}
 
+        void DrawSphere(GraphicsDevice device)
+        {
 
-		/// <summary>
-		/// Adds a new particle to the system.
-		/// </summary>
-		public void AddParticle (Vector3 position, Vector3 velocity)
+            device.BlendState = BlendState.Opaque;
+            device.DepthStencilState = DepthStencilState.Default;
+            device.SamplerStates[0] = SamplerState.LinearWrap;
+
+            for (int i = 0; i < settings.MaxParticles * 4; i = i + 4)
+            {
+                
+                sphere.Draw(Matrix.CreateTranslation(particles[i].Position), _view, _projection);
+
+            }
+            // draw coordinate frame for orientation
+            sphere.Draw(Matrix.CreateScale(1.0f) * Matrix.CreateTranslation(0, 0, 0), _view, _projection);
+            sphere.Draw(Matrix.CreateScale(2.0f) * Matrix.CreateTranslation(10, 0, 0), _view, _projection);
+            sphere.Draw(Matrix.CreateScale(3.0f) * Matrix.CreateTranslation(0, 20, 0), _view, _projection);
+            sphere.Draw(Matrix.CreateScale(4.0f) * Matrix.CreateTranslation(0, 0, 30), _view, _projection);
+        }
+
+
+        /// <summary>
+        /// Adds a new particle to the system.
+        /// </summary>
+        public void AddParticle (Vector3 position, Vector3 velocity)
 		{
 			// Figure out where in the circular queue to allocate the new particle.
 			int nextFreeParticle = firstFreeParticle + 1;
