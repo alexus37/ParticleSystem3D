@@ -11,24 +11,28 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
 #endregion
-
 
 namespace Particle3DSample
 {
     /// <summary>
-    /// This is the main type for your game.
+    /// Sample showing how to implement a particle system entirely
+    /// on the GPU, using the vertex shader to animate particles.
     /// </summary>
-    public class Particle3DSampleGame : Game
+    public class Particle3DSampleGame : Microsoft.Xna.Framework.Game
     {
+        #region Fields
+
+
         GraphicsDeviceManager graphics;
+
         SpriteBatch spriteBatch;
         SpriteFont font;
         Model grid;
-        
+
 
         // This sample uses five different particle systems.
         ParticleSystem explosionParticles;
@@ -48,18 +52,22 @@ namespace Particle3DSample
 
         ParticleState currentState = ParticleState.Explosions;
 
+
         // The explosions effect works by firing projectiles up into the
         // air, so we need to keep track of all the active projectiles.
         List<Projectile> projectiles = new List<Projectile>();
+
         TimeSpan timeToNextProjectile = TimeSpan.Zero;
 
 
         // Random number generator for the fire effect.
         Random random = new Random();
 
+
         // Input state.
         KeyboardState currentKeyboardState;
         GamePadState currentGamePadState;
+
         KeyboardState lastKeyboardState;
         GamePadState lastGamePadState;
 
@@ -69,74 +77,64 @@ namespace Particle3DSample
         float cameraRotation = 0;
         float cameraDistance = 200;
 
+
+        #endregion
+
+        #region Initialization
+
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Particle3DSampleGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
             // Construct our particle system components.
-            explosionParticles = new ParticleSystem(this, Content, "ExplosionSettings");
-            explosionSmokeParticles = new ParticleSystem(this, Content, "ExplosionSmokeSettings");
-            projectileTrailParticles = new ParticleSystem(this, Content, "ProjectileTrailSettings");
-            //smokePlumeParticles = new ParticleSystem(this, Content, "SmokePlumeSettings");
-            //fireParticles = new ParticleSystem(this, Content, "FireSettings");
+            explosionParticles = new ExplosionParticleSystem(this, Content);
+            explosionSmokeParticles = new ExplosionSmokeParticleSystem(this, Content);
+            projectileTrailParticles = new ProjectileTrailParticleSystem(this, Content);
+            smokePlumeParticles = new SmokePlumeParticleSystem(this, Content);
+            fireParticles = new FireParticleSystem(this, Content);
 
             // Set the draw order so the explosions and fire
             // will appear over the top of the smoke.
-            //smokePlumeParticles.DrawOrder = 100;
+            smokePlumeParticles.DrawOrder = 100;
             explosionSmokeParticles.DrawOrder = 200;
             projectileTrailParticles.DrawOrder = 300;
             explosionParticles.DrawOrder = 400;
-            //fireParticles.DrawOrder = 500;
+            fireParticles.DrawOrder = 500;
 
             // Register the particle system components.
             Components.Add(explosionParticles);
             Components.Add(explosionSmokeParticles);
             Components.Add(projectileTrailParticles);
-            //Components.Add(smokePlumeParticles);
-            //Components.Add(fireParticles);
+            Components.Add(smokePlumeParticles);
+            Components.Add(fireParticles);
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
-        protected override void Initialize()
-        {
-            // TODO: Add your initialization logic here
-
-            base.Initialize();
-        }
 
         /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
+        /// Load your graphics content.
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = Content.Load<SpriteFont>("File");
+            spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+
+            font = Content.Load<SpriteFont>("font");
             grid = Content.Load<Model>("grid");
-            
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
-        }
+
+        #endregion
+
+        #region Update and Draw
+
 
         /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
+        /// Allows the game to run logic.
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             HandleInput();
@@ -163,48 +161,11 @@ namespace Particle3DSample
             base.Update(gameTime);
         }
 
+
         /// <summary>
-        /// This is called when the game should draw itself.
+        /// Helper for updating the explosions effect.
         /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice device = graphics.GraphicsDevice;
-
-            device.Clear(Color.CornflowerBlue);
-
-            // Compute camera matrices.
-            float aspectRatio = (float)device.Viewport.Width / (float)device.Viewport.Height;
-
-            Matrix view = Matrix.CreateTranslation(0, -25, 0) *
-            Matrix.CreateRotationY(MathHelper.ToRadians(cameraRotation)) *
-            Matrix.CreateRotationX(MathHelper.ToRadians(cameraArc)) *
-            Matrix.CreateLookAt(new Vector3(0, 0, -cameraDistance),
-                        new Vector3(0, 0, 0), Vector3.Up);
-
-            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, aspectRatio, 1, 10000);
-
-            // Pass camera matrices through to the particle system components.
-            explosionParticles.SetCamera(view, projection);
-            explosionSmokeParticles.SetCamera(view, projection);
-            projectileTrailParticles.SetCamera(view, projection);
-            //smokePlumeParticles.SetCamera(view, projection);
-            //fireParticles.SetCamera(view, projection);
-
-            // Draw our background grid and message text.
-            DrawGrid(view, projection);
-            
-
-            DrawMessage();
-
-            // This will draw the particle system components.
-            base.Draw(gameTime);
-        }
-
-        /// <summary>
-		/// Helper for updating the explosions effect.
-		/// </summary>
-		void UpdateExplosions(GameTime gameTime)
+        void UpdateExplosions(GameTime gameTime)
         {
             timeToNextProjectile -= gameTime.ElapsedGameTime;
 
@@ -212,16 +173,19 @@ namespace Particle3DSample
             {
                 // Create a new projectile once per second. The real work of moving
                 // and creating particles is handled inside the Projectile class.
-                projectiles.Add(new Projectile(explosionParticles, explosionSmokeParticles, projectileTrailParticles));
+                projectiles.Add(new Projectile(explosionParticles,
+                                               explosionSmokeParticles,
+                                               projectileTrailParticles));
 
                 timeToNextProjectile += TimeSpan.FromSeconds(1);
             }
         }
 
+
         /// <summary>
-		/// Helper for updating the list of active projectiles.
-		/// </summary>
-		void UpdateProjectiles(GameTime gameTime)
+        /// Helper for updating the list of active projectiles.
+        /// </summary>
+        void UpdateProjectiles(GameTime gameTime)
         {
             int i = 0;
 
@@ -256,8 +220,7 @@ namespace Particle3DSample
         /// </summary>
         void UpdateFire()
         {
-            const
-                int fireParticlesPerFrame = 20;
+            const int fireParticlesPerFrame = 20;
 
             // Create a number of fire particles, randomly positioned around a circle.
             for (int i = 0; i < fireParticlesPerFrame; i++)
@@ -269,11 +232,12 @@ namespace Particle3DSample
             smokePlumeParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
         }
 
+
         /// <summary>
-		/// Helper used by the UpdateFire method. Chooses a random location
-		/// around a circle, at which a fire particle will be created.
-		/// </summary>
-		Vector3 RandomPointOnCircle()
+        /// Helper used by the UpdateFire method. Chooses a random location
+        /// around a circle, at which a fire particle will be created.
+        /// </summary>
+        Vector3 RandomPointOnCircle()
         {
             const float radius = 30;
             const float height = 40;
@@ -286,10 +250,51 @@ namespace Particle3DSample
             return new Vector3(x * radius, y * radius + height, 0);
         }
 
+
         /// <summary>
-		/// Helper for drawing the background grid model.
-		/// </summary>
-		void DrawGrid(Matrix view, Matrix projection)
+        /// This is called when the game should draw itself.
+        /// </summary>
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice device = graphics.GraphicsDevice;
+
+            device.Clear(Color.CornflowerBlue);
+
+            // Compute camera matrices.
+            float aspectRatio = (float)device.Viewport.Width /
+                                (float)device.Viewport.Height;
+
+            Matrix view = Matrix.CreateTranslation(0, -25, 0) *
+                          Matrix.CreateRotationY(MathHelper.ToRadians(cameraRotation)) *
+                          Matrix.CreateRotationX(MathHelper.ToRadians(cameraArc)) *
+                          Matrix.CreateLookAt(new Vector3(0, 0, -cameraDistance),
+                                              new Vector3(0, 0, 0), Vector3.Up);
+
+            Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4,
+                                                                    aspectRatio,
+                                                                    1, 10000);
+
+            // Pass camera matrices through to the particle system components.
+            explosionParticles.SetCamera(view, projection);
+            explosionSmokeParticles.SetCamera(view, projection);
+            projectileTrailParticles.SetCamera(view, projection);
+            smokePlumeParticles.SetCamera(view, projection);
+            fireParticles.SetCamera(view, projection);
+
+            // Draw our background grid and message text.
+            DrawGrid(view, projection);
+
+            DrawMessage();
+
+            // This will draw the particle system components.
+            base.Draw(gameTime);
+        }
+
+
+        /// <summary>
+        /// Helper for drawing the background grid model.
+        /// </summary>
+        void DrawGrid(Matrix view, Matrix projection)
         {
             GraphicsDevice device = graphics.GraphicsDevice;
 
@@ -297,10 +302,8 @@ namespace Particle3DSample
             device.DepthStencilState = DepthStencilState.Default;
             device.SamplerStates[0] = SamplerState.LinearWrap;
 
-            grid.Draw (Matrix.Identity, view, projection);
+            grid.Draw(Matrix.Identity, view, projection);
         }
-
-        
 
 
         /// <summary>
@@ -309,19 +312,25 @@ namespace Particle3DSample
         void DrawMessage()
         {
             string message = string.Format("Current effect: {0}!!!\n" +
-                    "Hit the A button or space bar to switch.",
-                    currentState);
+                                           "Hit the A button or space bar to switch.",
+                                           currentState);
 
             spriteBatch.Begin();
             spriteBatch.DrawString(font, message, new Vector2(50, 50), Color.White);
             spriteBatch.End();
         }
 
+
+        #endregion
+
+        #region Handle Input
+
+
         /// <summary>
-		/// Handles input for quitting the game and cycling
-		/// through the different particle effects.
-		/// </summary>
-		void HandleInput()
+        /// Handles input for quitting the game and cycling
+        /// through the different particle effects.
+        /// </summary>
+        void HandleInput()
         {
             lastKeyboardState = currentKeyboardState;
             lastGamePadState = currentGamePadState;
@@ -331,16 +340,16 @@ namespace Particle3DSample
 
             // Check for exit.
             if (currentKeyboardState.IsKeyDown(Keys.Escape) ||
-        currentGamePadState.Buttons.Back == ButtonState.Pressed)
+                currentGamePadState.Buttons.Back == ButtonState.Pressed)
             {
                 Exit();
             }
 
             // Check for changing the active particle effect.
             if (((currentKeyboardState.IsKeyDown(Keys.Space) &&
-        (lastKeyboardState.IsKeyUp(Keys.Space))) ||
-        ((currentGamePadState.Buttons.A == ButtonState.Pressed)) &&
-        (lastGamePadState.Buttons.A == ButtonState.Released)))
+                 (lastKeyboardState.IsKeyUp(Keys.Space))) ||
+                ((currentGamePadState.Buttons.A == ButtonState.Pressed)) &&
+                 (lastGamePadState.Buttons.A == ButtonState.Released)))
             {
                 currentState++;
 
@@ -359,13 +368,13 @@ namespace Particle3DSample
 
             // Check for input to rotate the camera up and down around the model.
             if (currentKeyboardState.IsKeyDown(Keys.Up) ||
-        currentKeyboardState.IsKeyDown(Keys.W))
+                currentKeyboardState.IsKeyDown(Keys.W))
             {
                 cameraArc += time * 0.025f;
             }
 
             if (currentKeyboardState.IsKeyDown(Keys.Down) ||
-        currentKeyboardState.IsKeyDown(Keys.S))
+                currentKeyboardState.IsKeyDown(Keys.S))
             {
                 cameraArc -= time * 0.025f;
             }
@@ -380,13 +389,13 @@ namespace Particle3DSample
 
             // Check for input to rotate the camera around the model.
             if (currentKeyboardState.IsKeyDown(Keys.Right) ||
-        currentKeyboardState.IsKeyDown(Keys.D))
+                currentKeyboardState.IsKeyDown(Keys.D))
             {
                 cameraRotation += time * 0.05f;
             }
 
             if (currentKeyboardState.IsKeyDown(Keys.Left) ||
-        currentKeyboardState.IsKeyDown(Keys.A))
+                currentKeyboardState.IsKeyDown(Keys.A))
             {
                 cameraRotation -= time * 0.05f;
             }
@@ -410,7 +419,7 @@ namespace Particle3DSample
                 cameraDistance = 10;
 
             if (currentGamePadState.Buttons.RightStick == ButtonState.Pressed ||
-        currentKeyboardState.IsKeyDown(Keys.R))
+                currentKeyboardState.IsKeyDown(Keys.R))
             {
                 cameraArc = -5;
                 cameraRotation = 0;
@@ -419,7 +428,8 @@ namespace Particle3DSample
         }
 
 
-
-      
+        #endregion
     }
+
+    
 }

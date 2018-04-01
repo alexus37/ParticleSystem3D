@@ -4,6 +4,8 @@
     <RemoteDebugMachine>192.168.2.110</RemoteDebugMachine>
     <AuthenticationMode>Universal</AuthenticationMode>
     <RemoteDebugEnabled>false</RemoteDebugEnabled>
+    <CommandLineArguments>-force-d3d11</CommandLineArguments>
+    <UseSimulator>false</UseSimulator>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <RemoteDebugMachine>192.168.2.110</RemoteDebugMachine>

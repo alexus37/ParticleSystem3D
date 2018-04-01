@@ -10,10 +10,11 @@ Particle3D.xr.xml
 Content\checker.xnb
 Content\checker_0.xnb
 Content\explosion.xnb
-Content\File.xnb
 Content\fire.xnb
+Content\Font.xnb
 Content\grid.xnb
 Content\ParticleEffect.xnb
 Content\smoke.xnb
 Content\sphere.xnb
+Content\ParticleEffect.fx
 Properties\Default.rd.xml
