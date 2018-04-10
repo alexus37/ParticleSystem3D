@@ -423,6 +423,15 @@
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Assets\Wide310x150Logo.scale-200.png">
       <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\CF4DrillAirHit.xnb">
+      <PackagePath>Content\CF4DrillAirHit.xnb</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\CFX2_T_ShinyStar.xnb">
+      <PackagePath>Content\CFX2_T_ShinyStar.xnb</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\CFX4Smoke.xnb">
+      <PackagePath>Content\CFX4Smoke.xnb</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\checker.xnb">
       <PackagePath>Content\checker.xnb</PackagePath>
     </AppxPackagedFile>

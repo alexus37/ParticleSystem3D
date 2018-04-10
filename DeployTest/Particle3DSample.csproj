@@ -100,7 +100,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="cF4DrillAirHit.cs" />
+    <Compile Include="cFX4Smoke.cs" />
     <Compile Include="ExplosionParticleSystem.cs" />
+    <Compile Include="ExplosionParticleSystemComic.cs" />
     <Compile Include="ExplosionSmokeParticleSystem.cs" />
     <Compile Include="FireParticleSystem.cs" />
     <Compile Include="GamePage.xaml.cs">
@@ -111,8 +114,10 @@
     <Compile Include="ParticleSettings.cs" />
     <Compile Include="ParticleSystem.cs" />
     <Compile Include="ParticleVertex.cs" />
+    <Compile Include="ProjectileComic.cs" />
     <Compile Include="Projectile.cs" />
     <Compile Include="ProjectileTrailParticleSystem.cs" />
+    <Compile Include="ProjectileTrailParticleSystemComic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SmokePlumeParticleSystem.cs" />
   </ItemGroup>

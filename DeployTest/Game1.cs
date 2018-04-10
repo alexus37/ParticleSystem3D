@@ -40,22 +40,30 @@ namespace Particle3DSample
         ParticleSystem projectileTrailParticles;
         ParticleSystem smokePlumeParticles;
         ParticleSystem fireParticles;
+        // comic effect
+        ParticleSystem cF4DrillAirHit;
+        ParticleSystem cFX4Smoke;
 
-
+        // CFX3_FIRE_EXPLOSION
+        ParticleSystem cFX3Smoke;
+        ParticleSystem cFX3ExplosionParticles;
         // The sample can switch between three different visual effects.
         enum ParticleState
         {
             Explosions,
             SmokePlume,
             RingOfFire,
+            ComicEffect,
+            CFX3_FIRE_EXPLOSION
         };
 
-        ParticleState currentState = ParticleState.Explosions;
+        ParticleState currentState = ParticleState.ComicEffect;
 
 
         // The explosions effect works by firing projectiles up into the
         // air, so we need to keep track of all the active projectiles.
         List<Projectile> projectiles = new List<Projectile>();
+        List<ProjectileComic> projectilesComic = new List<ProjectileComic>();
 
         TimeSpan timeToNextProjectile = TimeSpan.Zero;
 
@@ -98,6 +106,14 @@ namespace Particle3DSample
             smokePlumeParticles = new SmokePlumeParticleSystem(this, Content);
             fireParticles = new FireParticleSystem(this, Content);
 
+            cF4DrillAirHit = new CF4DrillAirHit(this, Content);
+            cFX4Smoke = new CFX4Smoke(this, Content);
+
+            cFX3Smoke = new ProjectileTrailParticleSystemComic(this, Content);
+            cFX3ExplosionParticles = new ExplosionParticleSystemComic(this, Content);
+
+
+
             // Set the draw order so the explosions and fire
             // will appear over the top of the smoke.
             smokePlumeParticles.DrawOrder = 100;
@@ -106,12 +122,25 @@ namespace Particle3DSample
             explosionParticles.DrawOrder = 400;
             fireParticles.DrawOrder = 500;
 
+            cF4DrillAirHit.DrawOrder = 600;
+            cFX4Smoke.DrawOrder = 700;
+
+            cFX3Smoke.DrawOrder = 300;
+            cFX3ExplosionParticles.DrawOrder = 200;
+
             // Register the particle system components.
             Components.Add(explosionParticles);
             Components.Add(explosionSmokeParticles);
             Components.Add(projectileTrailParticles);
             Components.Add(smokePlumeParticles);
             Components.Add(fireParticles);
+
+            Components.Add(cFX4Smoke);
+            Components.Add(cF4DrillAirHit);
+
+            Components.Add(cFX3Smoke);
+            Components.Add(cFX3ExplosionParticles);
+
         }
 
 
@@ -154,9 +183,17 @@ namespace Particle3DSample
                 case ParticleState.RingOfFire:
                     UpdateFire();
                     break;
+                case ParticleState.ComicEffect:
+                    UpdateComic();
+                    break;
+                case ParticleState.CFX3_FIRE_EXPLOSION:
+                    UpdateCF3FireExplosion(gameTime);
+                    break;
+
             }
 
             UpdateProjectiles(gameTime);
+            
 
             base.Update(gameTime);
         }
@@ -202,6 +239,22 @@ namespace Particle3DSample
                     i++;
                 }
             }
+
+            i = 0;
+
+            while (i < projectilesComic.Count)
+            {
+                if (!projectilesComic[i].Update(gameTime))
+                {
+                    // Remove projectiles at the end of their life.
+                    projectilesComic.RemoveAt(i);
+                }
+                else
+                {
+                    // Advance to the next projectile.
+                    i++;
+                }
+            }
         }
 
 
@@ -232,6 +285,36 @@ namespace Particle3DSample
             smokePlumeParticles.AddParticle(RandomPointOnCircle(), Vector3.Zero);
         }
 
+        void UpdateComic()
+        {
+            const int particlesPerFrame = 1;
+            Vector3 heightVec = new Vector3(0, 40, 0);
+            // Create a number of fire particles, randomly positioned around a circle.
+            for (int i = 0; i < particlesPerFrame; i++)
+            {
+                cF4DrillAirHit.AddParticle(RandomPointOnSphere(10f) + heightVec, Vector3.Zero);
+            }
+
+            // Create one smoke particle per frmae, too.
+            cFX4Smoke.AddParticle(RandomPointOnSphere(10f) + heightVec, Vector3.Zero);
+        }
+
+        void UpdateCF3FireExplosion(GameTime gameTime)
+        {
+            timeToNextProjectile -= gameTime.ElapsedGameTime;
+
+            if (timeToNextProjectile <= TimeSpan.Zero)
+            {
+                // Create a new projectile once per second. The real work of moving
+                // and creating particles is handled inside the Projectile class.
+                projectilesComic.Add(new ProjectileComic(cFX3ExplosionParticles,
+                                               explosionSmokeParticles,
+                                               cFX3Smoke));
+
+                timeToNextProjectile += TimeSpan.FromSeconds(1);
+            }
+        }
+
 
         /// <summary>
         /// Helper used by the UpdateFire method. Chooses a random location
@@ -250,6 +333,21 @@ namespace Particle3DSample
             return new Vector3(x * radius, y * radius + height, 0);
         }
 
+
+        Vector3 RandomPointOnSphere(float radius)
+        {
+            double lat = Math.Acos(2.0 * random.NextDouble() - 1.0) - Math.PI / 2;
+            double lng = random.NextDouble() * Math.PI * 2;
+            
+
+            double angle = random.NextDouble() * Math.PI * 2;
+
+            float x = (float)(Math.Cos(lat)  * Math.Cos(lng));
+            float y = (float)(Math.Cos(lat) * Math.Sin(lng));
+            float z = (float)Math.Sin(lat);
+
+            return new Vector3(x * radius, y * radius, z * radius);
+        }
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -280,6 +378,13 @@ namespace Particle3DSample
             projectileTrailParticles.SetCamera(view, projection);
             smokePlumeParticles.SetCamera(view, projection);
             fireParticles.SetCamera(view, projection);
+
+            cFX4Smoke.SetCamera(view, projection);
+            cF4DrillAirHit.SetCamera(view, projection);
+
+            cFX3Smoke.SetCamera(view, projection);
+            cFX3ExplosionParticles.SetCamera(view, projection);
+
 
             // Draw our background grid and message text.
             DrawGrid(view, projection);
@@ -353,7 +458,7 @@ namespace Particle3DSample
             {
                 currentState++;
 
-                if (currentState > ParticleState.RingOfFire)
+                if (currentState > ParticleState.CFX3_FIRE_EXPLOSION)
                     currentState = 0;
             }
         }

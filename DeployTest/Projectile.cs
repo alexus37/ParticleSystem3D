@@ -68,8 +68,7 @@ namespace Particle3DSample
             velocity.Z = (float)(random.NextDouble() - 0.5) * sidewaysVelocityRange;
 
             // Use the particle emitter helper to output our trail particles.
-            trailEmitter = new ParticleEmitter(projectileTrailParticles,
-                                               trailParticlesPerSecond, position);
+            trailEmitter = new ParticleEmitter(projectileTrailParticles, trailParticlesPerSecond, position);
         }
 
 

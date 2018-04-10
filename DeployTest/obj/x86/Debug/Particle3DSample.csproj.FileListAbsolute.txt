@@ -237,3 +237,7 @@ C:\Users\alex\Projects\particle3D\DeployTest\obj\x86\Debug\qualifiers.txt
 C:\Users\alex\Projects\particle3D\DeployTest\obj\x86\Debug\qualifiers.txt.intermediate
 C:\Users\alex\Projects\particle3D\DeployTest\obj\x86\Debug\MultipleQualifiersPerDimensionFound.txt
 C:\Users\alex\Projects\particle3D\DeployTest\obj\x86\Debug\ProjectArchitectures.txt
+C:\Users\alex\Projects\particle3D\DeployTest\obj\x86\Debug\Particle3DSample.csprojResolveAssemblyReference.cache
+C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Content\CF4DrillAirHit.xnb
+C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Content\CFX4Smoke.xnb
+C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Content\CFX2_T_ShinyStar.xnb

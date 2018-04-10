@@ -31,13 +31,13 @@
     <AppXManifest Include="C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-04-01T14:03:46.795</Modified>
+      <Modified>2018-04-10T21:07:47.080</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Particle3D.exe">
       <PackagePath>entrypoint\Particle3D.exe</PackagePath>
-      <Modified>2018-04-01T14:03:45.440</Modified>
+      <Modified>2018-04-10T21:07:46.785</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\.nuget\packages\jitterphysics\0.2.0.20\lib\portable-net45+netcore45+wpa81+wp8\Jitter.dll">
       <PackagePath>Jitter.dll</PackagePath>
@@ -565,41 +565,53 @@
       <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
       <Modified>2017-03-01T08:12:28.000</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\CF4DrillAirHit.xnb">
+      <PackagePath>Content\CF4DrillAirHit.xnb</PackagePath>
+      <Modified>2018-04-10T17:37:53.436</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\CFX2_T_ShinyStar.xnb">
+      <PackagePath>Content\CFX2_T_ShinyStar.xnb</PackagePath>
+      <Modified>2018-04-10T21:00:55.566</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\CFX4Smoke.xnb">
+      <PackagePath>Content\CFX4Smoke.xnb</PackagePath>
+      <Modified>2018-04-10T17:37:53.452</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\checker.xnb">
       <PackagePath>Content\checker.xnb</PackagePath>
-      <Modified>2018-04-01T13:48:04.520</Modified>
+      <Modified>2018-04-10T17:37:52.014</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\checker_0.xnb">
       <PackagePath>Content\checker_0.xnb</PackagePath>
-      <Modified>2018-04-01T13:48:05.071</Modified>
+      <Modified>2018-04-10T17:37:52.717</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\explosion.xnb">
       <PackagePath>Content\explosion.xnb</PackagePath>
-      <Modified>2018-04-01T13:48:04.583</Modified>
+      <Modified>2018-04-10T17:37:52.061</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\fire.xnb">
       <PackagePath>Content\fire.xnb</PackagePath>
-      <Modified>2018-04-01T13:48:04.614</Modified>
+      <Modified>2018-04-10T17:37:52.092</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\Font.xnb">
       <PackagePath>Content\Font.xnb</PackagePath>
-      <Modified>2018-04-01T13:48:05.634</Modified>
+      <Modified>2018-04-10T17:37:53.405</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\grid.xnb">
       <PackagePath>Content\grid.xnb</PackagePath>
-      <Modified>2018-04-01T13:48:05.102</Modified>
+      <Modified>2018-04-10T17:37:52.764</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\ParticleEffect.xnb">
       <PackagePath>Content\ParticleEffect.xnb</PackagePath>
-      <Modified>2018-04-01T13:48:04.930</Modified>
+      <Modified>2018-04-10T17:37:52.467</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\smoke.xnb">
       <PackagePath>Content\smoke.xnb</PackagePath>
-      <Modified>2018-04-01T13:48:04.642</Modified>
+      <Modified>2018-04-10T17:37:52.123</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\Content\bin\WindowsStoreApp\sphere.xnb">
       <PackagePath>Content\sphere.xnb</PackagePath>
-      <Modified>2018-04-01T13:48:05.430</Modified>
+      <Modified>2018-04-10T17:37:53.108</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Particle3D.xr.xml">
       <PackagePath>Particle3D.xr.xml</PackagePath>
@@ -612,11 +624,11 @@
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-04-01T14:03:46.578</Modified>
+      <Modified>2018-04-10T21:01:55.893</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\alex\Projects\particle3D\DeployTest\bin\WindowsUniversal\x86\Debug\Core\Particle3D.exe">
       <PackagePath>Particle3D.exe</PackagePath>
-      <Modified>2018-04-01T14:03:46.792</Modified>
+      <Modified>2018-04-10T21:07:47.077</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

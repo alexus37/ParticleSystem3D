@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/alex/Projects/particle3D/DeployTest/Content/explosion.png</SourceFile>
-  <SourceTime>2018-03-22T10:17:58.2611864+01:00</SourceTime>
-  <DestFile>C:/Users/alex/Projects/particle3D/DeployTest/Content/bin/WindowsStoreApp/explosion.xnb</DestFile>
-  <DestTime>2018-04-10T19:37:52.0613347+02:00</DestTime>
+  <SourceFile>C:/Users/alex/Projects/particle3D/DeployTest/Content/CFX4Smoke.png</SourceFile>
+  <SourceTime>2018-04-10T18:35:10+02:00</SourceTime>
+  <DestFile>C:/Users/alex/Projects/particle3D/DeployTest/Content/bin/WindowsStoreApp/CFX4Smoke.xnb</DestFile>
+  <DestTime>2018-04-10T19:37:53.4525561+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
